@@ -1,0 +1,15 @@
+flask
+flask-cors
+scikit-learn
+pandas
+pymongo
+flask-bcrypt
+dnspython
+flask-mail
+python-dotenv
+google-auth
+requests
+moviepy
+openai-whisper
+imageio-ffmpeg
+audioop-lts
