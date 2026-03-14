@@ -70,3 +70,24 @@ button, input, textarea {
 .premium-card:hover {
   transform: translateY(-4px);
 }
+
+/* Utility Classes */
+.text-rose-500 { color: #f43f5e; }
+.text-emerald-500 { color: #10b981; }
+.text-slate-400 { color: #94a3b8; }
+.text-slate-500 { color: #64748b; }
+.font-bold { font-weight: 700; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-start { display: flex; justify-content: flex-start; align-items: center; }
+.gap-3 { gap: 12px; }
+.w-full { width: 100%; }
+
+.pulse {
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}

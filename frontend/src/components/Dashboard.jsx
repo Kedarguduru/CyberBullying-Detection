@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-    LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer,
-    AreaChart, Area, CartesianGrid, ReferenceLine, Label,
+    XAxis, YAxis, Tooltip, ResponsiveContainer,
+    AreaChart, Area, CartesianGrid,
     BarChart, Bar, Cell
 } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -55,6 +55,12 @@ const Icon = ({ name, color = "currentColor", size = 20 }) => {
         ),
         Download: (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+        ),
+        Shield: (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        ),
+        Lock: (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         )
     };
     return icons[name] || null;
@@ -155,9 +161,9 @@ function Dashboard({ user }) {
         "nee akka lanja", "nee akka munda",
         "nee pellam lanja", "nee pellam munda",
         "nee amma ni denga", "nee akka ni denga",
-        "kojja gaanivi", "kojja naayala", "kojja fellow",
-        "puka", "puku na kodaka", "lanja dhaana",
-        "langa munda", "lanjodaka", "lanja kodaka",
+        "kojja", "kojja gaanivi", "kojja naayala", "kojja fellow",
+        "puka", "puku na kodaka", "lanja", "lanja dhaana",
+        "munda", "langa munda", "lanjodaka", "lanja kodaka",
         "sasthav", "champestha", "ninnu champestha",
         "ninnu dengesstha", "nee life finish",
         "ninnu vadilanu", "nee pani aipothundi",
@@ -249,20 +255,16 @@ function Dashboard({ user }) {
                 .replace(/b[i*x@#%! ]+tch/g, "bitch")
                 .replace(/p[u*x@#%! ]+ku/g, "puku");
 
-            // Extreme Masked Initial Logic (e.g., "f*** ** *")
-            const maskedInitialMatches = lowerMsg.match(/\b(f|p|l|s)[\s\*@#%!]{3,}\b/g);
-            if (maskedInitialMatches) {
-                deobfuscated += " fuck puku lanja shit"; // Inject root words for heuristic match
-            }
-
-            // --- Tactical Compressed Scan (Frontend) ---
+            // --- Tactical Scan Matrix ---
+            const spaceSeparated = lowerMsg.replace(/\s+/g, "");
             const compressed = lowerMsg.replace(/[^a-z]/g, "");
-
+            
             const detected = HEURISTIC_KEYWORDS.filter(kw => {
                 const kwLower = kw.toLowerCase();
                 const kwCompressed = kwLower.replace(/\s/g, "");
                 return lowerMsg.includes(kwLower) || 
                        deobfuscated.includes(kwLower) || 
+                       spaceSeparated.includes(kwCompressed) ||
                        (kwCompressed.length > 2 && compressed.includes(kwCompressed));
             });
 
