@@ -80,7 +80,9 @@ except Exception:
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+# CORS configuration for production
+frontend_url = os.getenv('FRONTEND_URL', 'http://localhost:3000')
+CORS(app, origins=[frontend_url, "http://localhost:3000"])  # Allow both production and local development
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024 # 100MB Limit
 
 # Email Configuration from .env
@@ -1094,4 +1096,5 @@ def get_predictions():
         return jsonify({"success": False, "error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

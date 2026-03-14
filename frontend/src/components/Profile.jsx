@@ -3,6 +3,8 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import "./Profile.css";
 
+const API_URL = process.env.REACT_APP_API_URL || '${API_URL}';
+
 const Profile = ({ user, onUpdate }) => {
   const [profile, setProfile] = useState({
     name: user?.name || "Professional Admin",
@@ -28,7 +30,7 @@ const Profile = ({ user, onUpdate }) => {
     setLoading(true);
     setMessage("");
     try {
-      await axios.post("http://localhost:5000/update-profile", profile);
+      await axios.post("${API_URL}/update-profile", profile);
       setMessage("Identity synchronized with global registry.");
       if (onUpdate) onUpdate({ name: profile.name, email: profile.email });
     } catch (err) {

@@ -16,3 +16,4 @@ pydub
 imageio
 numpy
 librosa
+gunicorn

@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, AlertTriangle, Activity, X, ChevronUp, ChevronDown, Mic, Radio } from 'lucide-react';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || '${API_URL}';
+
 const RealTimeWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isMinimized, setIsMinimized] = useState(true);
@@ -19,7 +21,7 @@ const RealTimeWidget = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/get-incidents');
+        const response = await axios.get('${API_URL}/get-incidents');
         const incidents = response.data;
         const threats = incidents.filter(inc => !inc.classification.includes('Safe')).length;
         
@@ -79,7 +81,7 @@ const RealTimeWidget = () => {
                 formData.append('audio', blob, 'chunk.webm');
                 
                 try {
-                    const response = await axios.post('http://localhost:5000/predict-audio-chunk', formData);
+                    const response = await axios.post('${API_URL}/predict-audio-chunk', formData);
                     if (response.data.prediction && response.data.prediction.includes('Detected')) {
                         setNotifications(prev => [{
                             id: Date.now(),

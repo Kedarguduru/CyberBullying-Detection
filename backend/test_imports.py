@@ -2,7 +2,6 @@ import whisper
 from moviepy import VideoFileClip
 from pydub import AudioSegment
 import imageio_ffmpeg as ffmpeg
-import audioop_lts
 import sklearn
 import numpy
 

@@ -3,6 +3,8 @@ import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 import "./Login.css";
 
+const API_URL = process.env.REACT_APP_API_URL || '${API_URL}';
+
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -37,7 +39,7 @@ const Login = ({ onLogin }) => {
     setError("");
     try {
       const payload = isRegistering ? { name, email } : { email };
-      const resp = await axios.post("http://localhost:5000/register", payload);
+      const resp = await axios.post("${API_URL}/register", payload);
       setStep(2);
       console.log("OTP SENT:", resp.data.otp_debug);
     } catch (err) {
@@ -53,7 +55,7 @@ const Login = ({ onLogin }) => {
     setLoading(true);
     setError("");
     try {
-      const resp = await axios.post("http://localhost:5000/verify-otp", { email, otp });
+      const resp = await axios.post("${API_URL}/verify-otp", { email, otp });
       if (resp.data.success) {
         onLogin(resp.data.user);
       }
@@ -68,7 +70,7 @@ const Login = ({ onLogin }) => {
     setLoading(true);
     setError("");
     try {
-      const resp = await axios.post("http://localhost:5000/google-login", {
+      const resp = await axios.post("${API_URL}/google-login", {
         token: credentialResponse.credential
       });
       if (resp.data.success) {

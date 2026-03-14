@@ -8,6 +8,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import "./BullyingDetector.css";
 
+const API_URL = process.env.REACT_APP_API_URL || '${API_URL}';
+
 // Professional SVG Component
 const Icon = ({ name, color = "currentColor", size = 20 }) => {
     const icons = {
@@ -276,7 +278,7 @@ function Dashboard({ user }) {
             // Automated System Scan (Debounced Backend Call)
             if (message.length > 3) {
                 try {
-                    const response = await axios.post("http://localhost:5000/predict", {
+                    const response = await axios.post(`${API_URL}/predict`, {
                         message: message,
                         email: user?.email || "Anonymous"
                     });
@@ -292,7 +294,7 @@ function Dashboard({ user }) {
 
             if (lastWord) {
                 try {
-                    const predRes = await axios.post("http://localhost:5000/get-predictions", { word: lastWord });
+                    const predRes = await axios.post("${API_URL}/get-predictions", { word: lastWord });
                     if (predRes.data.success) {
                         setSuggestions(predRes.data.suggestions);
                     }
@@ -312,7 +314,7 @@ function Dashboard({ user }) {
 
     const fetchHistory = async () => {
         try {
-            const resp = await axios.get("http://localhost:5000/get-incidents");
+            const resp = await axios.get("${API_URL}/get-incidents");
             setHistory(resp.data);
         } catch (err) {
             console.error("Telemetry fetch error");
@@ -327,7 +329,7 @@ function Dashboard({ user }) {
         if (!textToAnalyze.trim()) return;
         setLoading(true);
         try {
-            const response = await axios.post("http://localhost:5000/predict", {
+            const response = await axios.post("${API_URL}/predict", {
                 message: textToAnalyze,
                 email: user?.email || "Anonymous"
             });
@@ -365,7 +367,7 @@ function Dashboard({ user }) {
 
         setLoading(true);
         try {
-            const response = await axios.post("http://localhost:5000/predict-video", formData, {
+            const response = await axios.post("${API_URL}/predict-video", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
                 timeout: 600000 // 10 minute timeout for heavy processing
             });
@@ -389,7 +391,7 @@ function Dashboard({ user }) {
 
         try {
             setEngineError(null);
-            const resp = await axios.post("http://localhost:5000/analyze-image", formData, {
+            const resp = await axios.post("${API_URL}/analyze-image", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
             setImageData(resp.data);
@@ -424,7 +426,7 @@ function Dashboard({ user }) {
         setLoading(true);
         setDocError(null);
         try {
-            const response = await axios.post("http://localhost:5000/analyze-document", formData, {
+            const response = await axios.post("${API_URL}/analyze-document", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
             setDocData(response.data);
